@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Error Alert Example</title>
+
+    <script src="../js/errorAlert.js"></script>
+    <!--<script>-->
+        <!--new JSErrorAlert({showUser: true, userMessage: "hey", audit: true, auditUrl: "someurl"});-->
+    <!--</script>-->
+    <link rel="stylesheet" type="text/css" href="../css/errorAlert.css"/>
+</head>
+<body>
+
+<span class="error_message"></span>
+
+
+<p>
+This example demonstrates a clean alert reporting system.
+By default javascript errors that don't get caught bubble up to the
+window object and is displayed in the console.
+</p>
+<p>
+Adding this js lib will provide the user that something wrong has occured
+and allows you to log the error back via some ajax
+</p>
+<p>
+Click <a href="#" onclick="testError()">here</a> to trigger an error.
+</p>
+
+
+
+</body>
+</html>
