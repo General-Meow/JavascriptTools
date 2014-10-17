@@ -9,14 +9,14 @@
     window.document.addEventListener("keypress", function (event) {
 
         if (event.ctrlKey && event.shiftKey && event.keyCode === 25) {
-            console.log("Ctrl+Shift+Y Clicked");
             displayTiles = !displayTiles;
             var tiles = document.getElementsByClassName("tile");
 
             updateAllTiles();
         }
         else if (event.ctrlKey && event.shiftKey && event.keyCode === 5) {
-            updateAllTiles();
+            var containerClasses = window.document.querySelector(".container").classList;
+            containerClasses.toggle("seeThrough");
         }
     }, false);
 
@@ -44,7 +44,6 @@
         var element = this;
         element.jsObject.count++;
         var tempCount = element.jsObject.count;
-        console.log(tempCount);
         updateAllTiles();
         if (tempCount > highestCount) {
             highestCount = tempCount;
@@ -75,16 +74,18 @@
 
     Tile.prototype.removeTimer = function () {
         clearInterval(this.jsObject.timer);
-    }
+    };
 
     Tile.prototype.clickEvent = function (e) {
-        //hide this element
+        //hide this and container element
         this.style.visibility = "hidden";
         this.parentNode.style.visibility = "hidden";
 
-        var elementUnderneth = document.getElementById("alink");
-        console.log("derp:", elementUnderneth, e);
-        elementUnderneth.click();
+//        var elementUnderneth = document.getElementById("alink");
+        var elementUnderneth = document.elementFromPoint(e.x, e.y);
+        if (elementUnderneth) {
+            elementUnderneth.click();
+        }
         this.style.visibility = "visible";
         this.parentNode.style.visibility = "visible";
     };
