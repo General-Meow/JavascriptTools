@@ -27,6 +27,22 @@
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
   <component name="IdProvider" IDEtalkID="4690CF190EA2B5DED1E0F9E3F9295EB0" />
+  <component name="InspectionProjectProfileManager">
+    <profiles>
+      <profile version="1.0" is_locked="false">
+        <option name="myName" value="Project Default" />
+        <option name="myLocal" value="false" />
+        <inspection_tool class="JSLint" enabled="true" level="ERROR" enabled_by_default="true" />
+      </profile>
+    </profiles>
+    <option name="PROJECT_PROFILE" value="Project Default" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
+  </component>
+  <component name="JSLintConfiguration">
+    <option indent="4" />
+    <option maxerr="50" />
+  </component>
   <component name="Palette2">
     <group name="Swing">
       <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
@@ -151,6 +167,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/JavascriptErrorAlert/JavascriptErrorAlert.iml" filepath="$PROJECT_DIR$/JavascriptErrorAlert/JavascriptErrorAlert.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JavascriptHotspots/JavascriptHotspots.iml" filepath="$PROJECT_DIR$/JavascriptHotspots/JavascriptHotspots.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavascriptTools.iml" filepath="$PROJECT_DIR$/JavascriptTools.iml" />
     </modules>
   </component>
