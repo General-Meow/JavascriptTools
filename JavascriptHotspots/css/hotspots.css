@@ -1,3 +1,4 @@
-body div.container {z-index: 2; top: 100px; left: 0; position: absolute; overflow: hidden;}
+body div.container {z-index: 2; top: 0; left: 0; position: absolute; overflow: hidden;}
+body div.container.seeThrough {opacity: 0.5;}
 body div.container>span.tile {float: left;}
 body div.container>span.hide {opacity: 0;}

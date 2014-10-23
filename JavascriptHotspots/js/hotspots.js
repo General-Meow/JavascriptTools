@@ -1,24 +1,23 @@
-(function Hotspots() {
+(function hotspots() {
     "use strict";
 
 
-    var tileWidthPx = 25, tileHightPx = 25, displayTiles = false, tiles = [], highestCount = 0,
-        oneFith = 0, firstChunk = 0, secondChunk = 0, thirdChunk = 0, fourthChunk = 0, fithChunk = 0;
+    //default options
+    var tileWidthPx = 25, tileHeightPx = 25, displayTiles = false, tiles = [], highestCount = 0,
+        saveDataEndpointUrl = "http://localhost:9090/derp",
+        oneFifth = 0, firstChunk = 0, secondChunk = 0, thirdChunk = 0, fourthChunk = 0;
 
+    //functions
+    var updateAllTiles, generateGrid, generateTile, setHotspotSettings, removeGrid;
 
-    window.document.addEventListener("keypress", function (event) {
-
-        if (event.ctrlKey && event.shiftKey && event.keyCode === 25) {
-            displayTiles = !displayTiles;
-            var tiles = document.getElementsByClassName("tile");
-
-            updateAllTiles();
-        }
-        else if (event.ctrlKey && event.shiftKey && event.keyCode === 5) {
-            var containerClasses = window.document.querySelector(".container").classList;
-            containerClasses.toggle("seeThrough");
-        }
-    }, false);
+    setHotspotSettings = function setHotspotSettings(settings) {
+        window.hotspotSettings = {
+            tileWidthPx: settings.tileWidthPx,
+            tileHeightPx: settings.tileHeightPx,
+            displayTiles: settings.displayTiles,
+            saveDataEndpointUrl: settings.saveDataEndpointUrl
+        };
+    };
 
     function Tile(obj) {
         this.height = obj.height;
@@ -41,32 +40,33 @@
     }
 
     Tile.prototype.incrementTileCount = function () {
-        var element = this;
+        var element = this,
+            tempCount;
         element.jsObject.count++;
-        var tempCount = element.jsObject.count;
+        tempCount = element.jsObject.count;
         updateAllTiles();
         if (tempCount > highestCount) {
             highestCount = tempCount;
-            oneFith = highestCount / 5;
-            firstChunk = oneFith;
-            secondChunk = oneFith * 2;
-            thirdChunk = oneFith * 3;
-            fourthChunk = oneFith * 4;
+            oneFifth = highestCount / 5;
+            firstChunk = oneFifth;
+            secondChunk = oneFifth * 2;
+            thirdChunk = oneFifth * 3;
+            fourthChunk = oneFifth * 4;
         }
         if (!element.jsObject.timer) {
             element.jsObject.timer = setInterval(
                 function () {
                     element.jsObject.count++;
-                    var tempCount = element.jsObject.count;
+                    tempCount = element.jsObject.count;
                     updateAllTiles();
 
                     if (tempCount > highestCount) {
                         highestCount = tempCount;
-                        oneFith = highestCount / 5;
-                        firstChunk = oneFith;
-                        secondChunk = oneFith * 2;
-                        thirdChunk = oneFith * 3;
-                        fourthChunk = oneFith * 4;
+                        oneFifth = highestCount / 5;
+                        firstChunk = oneFifth;
+                        secondChunk = oneFifth * 2;
+                        thirdChunk = oneFifth * 3;
+                        fourthChunk = oneFifth * 4;
                     }
                 }, 1000);
         }
@@ -82,44 +82,40 @@
         this.parentNode.style.visibility = "hidden";
 
 //        var elementUnderneth = document.getElementById("alink");
-        var elementUnderneth = document.elementFromPoint(e.x, e.y);
-        if (elementUnderneth) {
-            elementUnderneth.click();
+        var elementUnderneath = document.elementFromPoint(e.x, e.y);
+        if (elementUnderneath) {
+            elementUnderneath.click();
         }
         this.style.visibility = "visible";
         this.parentNode.style.visibility = "visible";
     };
 
 
-    var updateAllTiles = function updateAllTiles() {
-        for (var i in tiles) {
-            var tile = tiles[i];
+    updateAllTiles = function updateAllTiles() {
+        var i, tile;
+        for (i = 0; i < tiles.length; i++) {
+
+            tile = tiles[i];
             tile.tileElement.className = "tile" + (displayTiles ? "" : " hide");
-            if (tile.count == 0) {
+            if (tile.count === 0) {
                 tile.tileElement.style.backgroundColor = "#520052";
-            }
-            else if (tile.count == 1) {
+            } else if (tile.count === 1) {
                 tile.tileElement.style.backgroundColor = "#751975";
-            }
-            else if (tile.count >= 2 && tile.count < firstChunk) {
+            } else if (tile.count >= 2 && tile.count < firstChunk) {
                 tile.tileElement.style.backgroundColor = "#000066";
-            }
-            else if (tile.count >= firstChunk && tile.count < secondChunk) {
+            } else if (tile.count >= firstChunk && tile.count < secondChunk) {
                 tile.tileElement.style.backgroundColor = "#1947D1";
-            }
-            else if (tile.count >= secondChunk && tile.count < thirdChunk) {
+            } else if (tile.count >= secondChunk && tile.count < thirdChunk) {
                 tile.tileElement.style.backgroundColor = "#E6E600";
-            }
-            else if (tile.count >= thirdChunk && tile.count < fourthChunk) {
+            } else if (tile.count >= thirdChunk && tile.count < fourthChunk) {
                 tile.tileElement.style.backgroundColor = "#D13E19";
-            }
-            else if (tile.count >= fourthChunk) {
+            } else if (tile.count >= fourthChunk) {
                 tile.tileElement.style.backgroundColor = "#CC0000";
             }
         }
-    }
+    };
 
-    function generateGrid() {
+    generateGrid = function generateGrid() {
         var body = window.document.querySelector("body");
         var container = window.document.createElement("div");
 
@@ -131,35 +127,85 @@
         body.insertBefore(container, body.firstChild);
 
         var width = window.outerWidth;
-        var widthRemaining = window.outerWidth % tileWidthPx;
+        var widthRemaining = window.outerWidth % window.hotspotSettings.tileWidthPx;
 
         if (widthRemaining) {
-            width = window.outerWidth + (tileWidthPx - widthRemaining);
+            width = window.outerWidth + (window.hotspotSettings.tileWidthPx - widthRemaining);
         }
 
         var height = window.outerHeight;
-        var heightRemaining = window.outerHeight % tileHightPx;
+        var heightRemaining = window.outerHeight % window.hotspotSettings.tileHeightPx;
 
         if (heightRemaining) {
-            height = window.outerHeight + (tileHightPx - heightRemaining);
+            height = window.outerHeight + (window.hotspotSettings.tileHeightPx - heightRemaining);
         }
 
-        var tilesAcross = width / tileWidthPx;
-        var tilesDown = height / tileHightPx;
+        var tilesAcross = width / window.hotspotSettings.tileWidthPx;
+        var tilesDown = height / window.hotspotSettings.tileHeightPx;
         var totalTiles = tilesAcross * tilesDown;
-
-        for (var i = 0; i < totalTiles; i++) {
+        var i;
+        for (i = 0; i < totalTiles; i++) {
             container.appendChild(generateTile());
         }
+    };
 
-    }
-
-    function generateTile() {
-        var tile = new Tile({height: tileHightPx, width: tileWidthPx, count: 0, showTiles: displayTiles})
+    generateTile = function generateTile() {
+        var tile = new Tile({height: window.hotspotSettings.tileHeightPx, width: window.hotspotSettings.tileWidthPx, count: 0, showTiles: window.hotspotSettings.displayTiles})
         tiles.push(tile);
         return tile.tileElement;
-    }
+    };
+
+    removeGrid = function removeGrid() {
+        var body = window.document.querySelector("body");
+        var container = window.document.querySelector(".container");
+        body.removeChild(container);
+    };
+
+    //function to be run by the user to customize this app
+    window.createNewHotspotGrid = function createNewHotspotGrid(settings) {
+        removeGrid();
+        setHotspotSettings(settings);
+        generateGrid();
+    };
 
 
+    //just before loading a new page, post tiles data to an endpoint synchronously
+//    window.addEventListener('unload', function () {
+//        var sendStats = new XMLHttpRequest(),
+//            data;
+//
+//        sendStats.onreadystatechange = function sendStatsComplete() {
+//            if (sendStats.readyState === 4 && sendStats.status === 200) {
+//                console.log("in callback, posting of data successful");
+//            }
+//        };
+//        sendStats.open("POST", saveDataEndpointUrl, false);
+//        sendStats.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+//
+//        //only stringify height, width and count. done because of a circular reference in tile as 'this.tileElement.jsObject = this;'
+//        data = {tilesArr: tiles, url: window.location.href};
+//        sendStats.send(JSON.stringify(data, ['url', 'tilesArr', 'height', 'width', 'count']));
+//    });
+
+    //listen for certain key presses
+    window.document.addEventListener("keypress", function (event) {
+        console.log("key press", event.keyCode);
+        if (event.ctrlKey && event.shiftKey && event.keyCode === 25) { //y
+            displayTiles = !displayTiles;
+            updateAllTiles();
+        } else if (event.ctrlKey && event.shiftKey && event.keyCode === 5) { //e
+            var containerClasses = window.document.querySelector(".container").classList;
+            containerClasses.toggle("seeThrough");
+        } else if (event.ctrlKey && event.shiftKey && event.keyCode === 1) { //a
+            removeGrid();
+        } else if (event.ctrlKey && event.shiftKey && event.keyCode === 19) { //s
+            console.log("sedfsf");
+        }
+    }, false);
+
+
+    //setup
+    setHotspotSettings({tileWidthPx: tileWidthPx, tileHeightPx: tileHeightPx, displayTiles: displayTiles, saveDataEndpointUrl: saveDataEndpointUrl});
+    //start
     generateGrid();
-})();
+}());
